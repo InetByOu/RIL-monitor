@@ -36,6 +36,18 @@ restart ril-daemon
 
 ## 🚀 Installation & Usage
 
+# Update & upgrade package
+pkg update -y && pkg upgrade -y
+
+# Install dependency utama
+pkg install -y git curl sudo
+
+# Pastikan bash terinstall (biasanya sudah ada)
+pkg install -y bash
+
+# Test akses root
+su -c id
+
 ### 1️⃣ Clone Repository
 
 ```bash
