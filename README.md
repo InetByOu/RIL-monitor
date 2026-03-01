@@ -207,4 +207,4 @@ sudo ./rilmon.sh
 ---
 
 **Version:** 1.1  
-**Maintainer:** InetByOu
+**Maintainer:** EDOLL
