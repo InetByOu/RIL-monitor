@@ -1,34 +1,65 @@
-RIL MONITOR MANAGER v1.1
-Repository: https://github.com/InetByOu/RIL-monitor.git
+# RIL MONITOR MANAGER v1.1
 
-RIL Monitor Manager adalah script Bash untuk Android (rooted) yang berfungsi memonitor koneksi internet secara berkala dan otomatis me-restart service `ril-daemon` jika terjadi kegagalan koneksi berulang. Sistem dilengkapi pembatasan restart per jam untuk mencegah infinite restart loop.
+**Repository:** https://github.com/InetByOu/RIL-monitor.git  
+**Platform:** Rooted Android  
+**License:** MIT  
 
-============================================================
-REQUIREMENTS
-============================================================
-- Android dengan akses ROOT
-- sudo atau akses administratif
-- su berfungsi normal
-- curl terinstall
+---
+
+## 📌 Overview
+
+**RIL Monitor Manager** adalah script Bash untuk Android (root) yang berfungsi untuk:
+
+- Memonitor koneksi internet secara berkala
+- Mendeteksi kegagalan koneksi berulang
+- Otomatis me-restart service `ril-daemon`
+- Mencegah infinite restart loop dengan sistem pembatasan restart per jam
+
+Script ini dirancang ringan, stabil, dan cocok digunakan pada perangkat Android yang sering mengalami drop koneksi seluler.
+
+---
+
+## ⚙️ Requirements
+
+- Android dengan akses **ROOT**
+- `su` berfungsi normal
+- `sudo` atau akses administratif
+- `curl` terinstall
 - Bash shell (disarankan via Termux)
-- Sistem mendukung perintah: restart ril-daemon
+- Sistem mendukung perintah:
 
-============================================================
-INSTALLATION & CARA MENJALANKAN
-============================================================
-1. Clone repository:
-   git clone https://github.com/InetByOu/RIL-monitor.git
-   cd RIL-monitor
+```
+restart ril-daemon
+```
 
-2. Berikan izin eksekusi:
-   chmod +x rilmon.sh
+---
 
-3. Jalankan (WAJIB menggunakan sudo):
-   sudo ./rilmon.sh
+## 🚀 Installation & Usage
 
-============================================================
-MENU UTAMA
-============================================================
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/InetByOu/RIL-monitor.git
+cd RIL-monitor
+```
+
+### 2️⃣ Berikan Izin Eksekusi
+
+```bash
+chmod +x rilmon.sh
+```
+
+### 3️⃣ Jalankan (WAJIB menggunakan sudo)
+
+```bash
+sudo ./rilmon.sh
+```
+
+---
+
+## 🖥 Main Menu
+
+```
 [1] Start Monitoring (Foreground)
 [2] Start Monitoring (Background)
 [3] Stop Background Monitoring
@@ -37,78 +68,131 @@ MENU UTAMA
 [6] View Log
 [7] Test Connection Now
 [8] Exit
+```
 
-============================================================
-CARA KERJA
-============================================================
-- Script mengecek koneksi menggunakan:
-  curl -I --connect-timeout TIMEOUT -m TIMEOUT TARGET_URL
+---
 
-- Jika gagal berturut-turut sebanyak MAX_FAIL:
-  → Menjalankan: su -c "restart ril-daemon"
-  → Menunggu COOLDOWN detik
-  → Reset fail counter
+## 🔎 Cara Kerja
 
-- Restart dibatasi oleh MAX_RESTART_PER_HOUR
+Script mengecek koneksi menggunakan:
+
+```bash
+curl -I --connect-timeout TIMEOUT -m TIMEOUT TARGET_URL
+```
+
+Jika gagal berturut-turut sebanyak `MAX_FAIL`:
+
+1. Menjalankan:
+   ```bash
+   su -c "restart ril-daemon"
+   ```
+2. Menunggu `COOLDOWN` detik
+3. Reset fail counter
+
+### 🔒 Proteksi Restart
+
+- Restart dibatasi oleh `MAX_RESTART_PER_HOUR`
 - Counter restart otomatis reset setiap 3600 detik (1 jam)
 
-============================================================
-MODE OPERASI
-============================================================
-Foreground:
+---
+
+## 🧩 Mode Operasi
+
+### 🔹 Foreground Mode
 - Monitoring tampil langsung di terminal
-- Berhenti dengan Ctrl + C
+- Berhenti dengan `Ctrl + C`
 
-Background:
+### 🔹 Background Mode
 - Monitoring berjalan di belakang layar
-- PID disimpan di .ril_monitor.pid
-- Log tersimpan di logs/monitor.log
+- PID disimpan di:
+  ```
+  .ril_monitor.pid
+  ```
+- Log tersimpan di:
+  ```
+  logs/monitor.log
+  ```
 
-============================================================
-KONFIGURASI DEFAULT
-============================================================
+---
+
+## 🛠 Default Configuration
+
+```bash
 TARGET_URL="https://www.bing.com"
 TIMEOUT=5
 INTERVAL=10
 MAX_FAIL=3
 COOLDOWN=20
 MAX_RESTART_PER_HOUR=5
+```
 
-============================================================
-KONFIGURASI DISARANKAN (BALANCED)
-============================================================
+---
+
+## ⚖ Recommended Configuration (Balanced)
+
+```bash
 TARGET_URL="https://1.1.1.1"
 TIMEOUT=5
 INTERVAL=15
 MAX_FAIL=3
 COOLDOWN=30
 MAX_RESTART_PER_HOUR=4
+```
 
-============================================================
-LOGGING
-============================================================
-Lokasi: logs/monitor.log
-Format: [YYYY-MM-DD HH:MM:SS] Pesan
+---
+
+## 📜 Logging
+
+**Lokasi:**
+
+```
+logs/monitor.log
+```
+
+**Format:**
+
+```
+[YYYY-MM-DD HH:MM:SS] Pesan
+```
 
 Lihat realtime:
-tail -f logs/monitor.log
 
-============================================================
-STOP & CLEANUP
-============================================================
+```bash
+tail -f logs/monitor.log
+```
+
+---
+
+## 🧹 Stop & Cleanup
+
 Hentikan monitoring background melalui menu.
+
 Hapus semua file:
+
+```bash
 rm rilmon.sh
 rm ril_config.conf
 rm -rf logs
 rm .ril_monitor.pid
+```
 
-============================================================
-EKSEKUSI WAJIB
-============================================================
+---
+
+## ⚠️ Eksekusi Wajib
+
+```bash
 sudo ./rilmon.sh
+```
 
-Version : 1.1
-License : MIT
-Platform: Rooted Android
-============================================================
+---
+
+## 🧠 Notes
+
+- Pastikan perangkat benar-benar rooted.
+- Gunakan dengan bijak untuk menghindari restart jaringan berlebihan.
+- Direkomendasikan untuk perangkat yang sering mengalami drop sinyal atau stuck data.
+
+---
+
+**Version:** 1.1  
+**Maintainer:** InetByOu
